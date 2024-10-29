@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactie met jQuery: Item toevoegen en verwijderen</title>
+    <!-- jQuery-bibliotheek -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Voeg een nieuw item toe aan de lijst wanneer op de knop wordt geklikt
+            $("#addItemButton").click(function() {
+                var newItem = $("#itemInput").val();
+                if (newItem) {
+                    // Voeg het nieuwe item toe zonder zichtbare verwijderknop
+                    $("#itemList").append(
+                        "<li class='item'>" + newItem + "<button class='removeItem' style='display: none;'>Verwijder</button></li>"
+                    );
+                    $("#itemInput").val(""); // Wis het invoerveld
+                } else {
+                    alert("Vul een item in om toe te voegen!");
+                }
+            });
+
+            // Toon de verwijderknop bij het klikken op een item
+            $("#itemList").on("click", ".item", function(event) {
+                // Verberg eerst alle verwijderknoppen
+                $(".removeItem").hide();
+                // Toon de verwijderknop van het aangeklikte item
+                $(this).find(".removeItem").show();
+                event.stopPropagation(); // Voorkomt dat het venster de klik verwerkt
+            });
+
+            // Verwijder het item als op de zichtbare verwijderknop wordt geklikt
+            $("#itemList").on("click", ".removeItem", function(event) {
+                $(this).parent().remove(); // Verwijder het item (de ouder <li>)
+                event.stopPropagation(); // Voorkomt dat het venster de klik verwerkt
+            });
+
+            // Verberg de verwijderknoppen als er buiten een item wordt geklikt
+            $(document).click(function() {
+                $(".removeItem").hide();
+            });
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #itemList {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+        .removeItem {
+            margin-left: 10px;
+            color: #fff;
+            background-color: #f44336;
+            border: none;
+            padding: 2px 6px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .removeItem:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactie met jQuery: Item toevoegen en verwijderen</h1>
+    <p>Vul een item in en klik op de knop om het toe te voegen aan de lijst. Klik op een item om de verwijderoptie te tonen.</p>
+
+    <input type="text" id="itemInput" placeholder="Typ een nieuw item">
+    <button id="addItemButton">Voeg item toe</button>
+
+    <ul id="itemList">
+        <li class="item">Voorbeelditem 1 <button class="removeItem" style="display: none;">Verwijder</button></li>
+        <li class="item">Voorbeelditem 2 <button class="removeItem" style="display: none;">Verwijder</button></li>
+    </ul>
+</body>
+</html>
